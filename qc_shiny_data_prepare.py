@@ -37,7 +37,9 @@ def read_seek(infile):
     s = 'sample,volume,dup_perc,specificity,align_rate,coverage>1,coverage>20,coverage>30,coverage>50,depth,gender,time'.split(
         ',')
     df_use.rename(columns=dict(zip(r, s)), inplace=True)
-    return df_use.head()
+    right_sort = 'sample,volume,dup_perc,specificity,align_rate,delete,coverage>1,coverage>20,coverage>30,coverage>50,depth,gender,time,group'.split(',')
+    df_use = df_use[right_sort]
+    return df_use
 
 
 def main(infile):
