@@ -10,10 +10,17 @@
 import os
 import sys
 import pandas as pd
+import numpy as np
 
 
 def p2f(x):
-    return float(x.strip('%')) / 100
+    try:
+        re = float(x.strip('%')) / 100
+    except ValueError:
+        re = np.NaN
+        print(x)
+    finally:
+        return re
 
 
 def read_seek(infile):
@@ -37,7 +44,8 @@ def read_seek(infile):
     s = 'sample,volume,dup_perc,specificity,align_rate,coverage>1,coverage>20,coverage>30,coverage>50,depth,gender,time'.split(
         ',')
     df_use.rename(columns=dict(zip(r, s)), inplace=True)
-    right_sort = 'sample,volume,dup_perc,specificity,align_rate,delete,coverage>1,coverage>20,coverage>30,coverage>50,depth,gender,time,group'.split(',')
+    right_sort = 'sample,volume,dup_perc,specificity,align_rate,delete,coverage>1,coverage>20,coverage>30,coverage>50,depth,gender,time,group'.split(
+        ',')
     df_use = df_use[right_sort]
     return df_use
 
