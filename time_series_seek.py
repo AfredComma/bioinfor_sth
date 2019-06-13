@@ -24,7 +24,7 @@ def deal_data_frame(infile):
         dfre.iloc[list(range(i * a, (i + 1) * a)), 2] = [df.columns[i].split('_w')[0]] * a
         dfre.iloc[list(range(i * a, (i + 1) * a)), 3] = [df.columns[i].split('_w')[-1]] * a
     dfre.columns = ["value", "genus", "person", "period"]
-    return dfre, dfre.index.to_list()
+    return dfre, df.index.to_list()
 
 
 def seek_part(dfre, want_genus):
@@ -46,7 +46,9 @@ def seek_run(dfre, want_genus="g__Abiotrophia"):
 
 def main(infile):
     dfre, genus_list = deal_data_frame(infile)
-    seek_run(dfre)
+    print(genus_list)
+    for g in genus_list:
+        seek_run(dfre, want_genus=g)
 
 
 if __name__ == '__main__':
