@@ -27,11 +27,25 @@ def deal_data_frame(infile):
     return dfre
 
 
-def main(infile):
+def seek_part(dfre, want_genus):
+    df2 = dfre[dfre['genus'] == want_genus]
+    return df2
+
+
+def seek_run(infile, want_genus="g__Abiotrophia"):
+    right_path = '/'.join(os.path.abspath(__file__).split('/')[:-1])
     dfre = deal_data_frame(infile)
-    print(dfre.head())
+    dfre2 = seek_part(dfre, want_genus)
+    dat_file = want_genus + ".tsv"
+    dfre2.to_csv(dat_file, sep='\t')
+    shs = "Rscript %s/draw_time_series_seek.R -i %s" % (right_path, dat_file)
+    print(shs)
+    os.system(shs)
+
+
+def main(infile):
+    seek_run(infile)
 
 
 if __name__ == '__main__':
-    os.chdir(sys.argv[1])
-    main(sys.argv[2])
+    main(sys.argv[1])
