@@ -35,6 +35,8 @@ def seek_part(dfre, want_genus):
 def seek_run(dfre, want_genus="g__Abiotrophia"):
     right_path = '/'.join(os.path.abspath(__file__).split('/')[:-1])
     dfre2 = seek_part(dfre, want_genus)
+    want_genus = want_genus.replace(' ', '_')
+    want_genus = want_genus.replace('/', '_')
     dat_file = want_genus + ".tsv"
     lines_pdf = want_genus + '_lines'
     smooth_pdf = want_genus + "_smooth"
