@@ -20,17 +20,24 @@ def con(infile):
     return a, b
 
 
-infile = sys.argv[1]
-a, b = con(infile)
-relist = [a, b]
-relist.insert(0, infile.split('/')[-1].replace('_genefamilies.tsv', ''))
-relist = [str(i) for i in relist]
-re_str = '\t'.join(relist)
-print(re_str)
+def get_file(infile):
+    sample_id = infile.split('/')[-1].replace('_genefamilies.tsv', '')
+    out_file = os.path.join('gene_count', sample_id + "_genefamilies_remove_repeat.tsv")
+    shs = 'grep -v -e "g__" %s > %s' % (
+        infile, out_file)
+    os.system(shs)
+    return sample_id, out_file
 
 
 def main():
-    pass
+    infile = sys.argv[1]
+    sample_id, out_file = get_file(infile)
+    a, b = con(out_file)
+    relist = [a, b]
+    relist.insert(0, sample_id)
+    relist = [str(i) for i in relist]
+    re_str = '\t'.join(relist)
+    print(re_str)
 
 
 if __name__ == '__main__':
