@@ -34,17 +34,22 @@ def get_only(file_list):
     dfre = pd.DataFrame()
     for i in file_list:
         dd = pd.read_csv(i, sep='\t', index_col=0)
+        print(dd.head())
         dd.index = [i.split('|')[-1] for i in dd.index]
         dd2 = dd.sum(level=0)
-        dd3 = dd2/dd2.sum()
-        dfre = pd.concat([dfre,dd3],axis=1)
-    dfre.to_csv("species_relative_abundance.tsv")
+        dd3 = dd2 / dd2.sum()
+        dfre = pd.concat([dfre, dd3], axis=1)
+    a = dfre.columns.to_list()
+    b = [j.replace('_Abundance-RPKs', '') for j in a]
+    dfre.columns = b
+    dfre = dfre.fillna(0)
+    dfre.to_csv("species_relative_abundance.tsv", sep='\t')
 
 
 def main(indir):
     b = getfile(indir)
     reusl = begin_grep(b)
-    getfile(reusl)
+    get_only(reusl)
 
 
 if __name__ == '__main__':
