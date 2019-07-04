@@ -25,16 +25,16 @@ def get_dict(txt):
     C = ''
     for i in txt:
         if i.startswith('A'):
-            A = i[7:].replace('\n','')
+            A = i[7:].replace('\n', '')
         elif i.startswith('B'):
-            if len(i)>5:
-                B = i[9:].replace('\n','')
+            if len(i) > 5:
+                B = i[9:].replace('\n', '')
         elif i.startswith('C'):
-            C = i[11:].replace('\n','')
+            C = i[11:].replace('\n', '')
         elif i.startswith('D'):
-            s = i.replace('D      ','')
+            s = i.replace('D      ', '')
             D = s[:6]
-            D_des = '^'.join([s[8:].replace('\n',''),C,B,A])
+            D_des = '^'.join([s[8:].replace('\n', ''), C, B, A])
             if D in re_d:
                 print("************")
                 print(re_d[D])
@@ -43,19 +43,21 @@ def get_dict(txt):
                     re_d[D].append(D_des)
                 elif isinstance(re_d[D], list):
                     re_d[D].append(D_des)
-                #None?
+                # None?
             else:
-                re_d[D] = '^'.join([s[8:].replace('\n',''),C,B,A])
+                re_d[D] = '^'.join([s[8:].replace('\n', ''), C, B, A])
     return re_d
 
 
 a = getlines_list('ko00001.keg')
 re_d = get_dict(a)
-#print(re_d)
+
+
+# print(re_d)
 
 
 def extend_df(re_d):
-    df = pd.read_csv("kegg_use_abundance.tsv",sep = '\t',index_col = 0)
+    df = pd.read_csv("kegg_use_abundance.tsv", sep='\t', index_col=0)
     df2 = df[:]
     cc = []
     rr = []
@@ -63,28 +65,29 @@ def extend_df(re_d):
         i = df.index[h]
         if i not in re_d.keys():
             cc.append("None")
-            print(i+"has not level!")
+            print(i + "has not level!")
             rr.append(h)
         else:
             site = re_d[i]
-            if isinstance(site,str):
+            if isinstance(site, str):
                 cc.append(site)
                 rr.append(h)
-            elif isinstance(site,list):
+            elif isinstance(site, list):
                 print(site)
                 cc.extend(site)
-                rr.extend([h]*len(site))
+                rr.extend([h] * len(site))
             else:
                 cc.append(site)
                 rr.append(h)
     print(len(rr))
-    dfr = df.iloc[rr,:]
+    dfr = df.iloc[rr, :]
     dfr['level4^level3^level2^level1'] = cc
-    #df['des^level4^level3^level2^level1'] = [re_d[i] for i in df.index]
-    dfr.to_csv("uniq_kegg_relative_abundance_table_explain_updateJune27",sep = '\t')
+    # df['des^level4^level3^level2^level1'] = [re_d[i] for i in df.index]
+    dfr.to_csv("uniq_kegg_relative_abundance_table_explain_updateJune27", sep='\t')
 
 
 extend_df(re_d)
+
 
 def main():
     pass
