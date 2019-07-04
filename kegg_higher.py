@@ -21,9 +21,14 @@ def main(infile, outfile, level='level2'):
     level_list = [i.split('^')[level_n] for i in ulist]
     df.index = level_list
     df = df.drop(['level4^level3^level2^level1'], axis=1)
-    df2 = df[:]
-    df3 = df2.sum(level=0)
-    df3.to_csv(outfile, sep='\t')
+    if level != 'level4':
+        df2 = df[:]
+        df3 = df2.sum(level=0)
+        df3.to_csv(outfile, sep='\t')
+    else:
+        df2 = df[:]
+        df3 = df2.loc[~df2.index.duplicated(keep='first')]
+        df3.to_csv(outfile, sep='\t')
 
 
 if __name__ == '__main__':
