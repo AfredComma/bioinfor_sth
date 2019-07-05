@@ -9,7 +9,7 @@
 
 import pandas as pd
 import numpy as np
-import os
+import sys
 
 
 def getlines_list(infile):
@@ -56,8 +56,8 @@ re_d = get_dict(a)
 # print(re_d)
 
 
-def extend_df(re_d):
-    df = pd.read_csv("kegg_use_abundance.tsv", sep='\t', index_col=0)
+def extend_df(re_d, infile, outfile):
+    df = pd.read_csv(infile, sep='\t', index_col=0)
     df2 = df[:]
     cc = []
     rr = []
@@ -83,12 +83,13 @@ def extend_df(re_d):
     dfr = df.iloc[rr, :]
     dfr['level4^level3^level2^level1'] = cc
     # df['des^level4^level3^level2^level1'] = [re_d[i] for i in df.index]
-    dfr.to_csv("uniq_kegg_relative_abundance_table_explain_updateJune27", sep='\t')
+    dfr.to_csv(outfile, sep='\t')
 
 
-extend_df(re_d)
+extend_df(re_d, sys.argv[1], sys.argv[2])
 
 
+# python kegg_anno3.py level4_35_2_pt.Type.ADHD_HEA level4_35_2_pt_append.Type.ADHD_HEA
 def main():
     pass
 
