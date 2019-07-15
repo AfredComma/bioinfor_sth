@@ -45,12 +45,15 @@ def download_dfata(infile):
     ids = [i.replace('\n', '') for i in ids]
     for seq_id in ids:
         outfile = str(seq_id) + ".fasta"
-        handle = Entrez.efetch(db="protein", id=seq_id, rettype="fasta", retmode="text")
-        record = handle.read()
-        re_string = record.rstrip('\n')
-        with open(outfile, 'w') as g:
-            g.write(re_string)
-        time.sleep(0.3)
+        if os.path.exists(outfile):
+            pass
+        else:
+            handle = Entrez.efetch(db="protein", id=seq_id, rettype="fasta", retmode="text")
+            record = handle.read()
+            re_string = record.rstrip('\n')
+            handle.close()
+            with open(outfile, 'w') as g:
+                g.write(re_string)
 
 
 if __name__ == '__main__':
