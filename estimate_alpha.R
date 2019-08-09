@@ -17,3 +17,6 @@ es_data<-rbind(shannon,simpson)
 outfile<-sub("gene_relative_abun","alpha",infile)
 write.csv(es_data,file = outfile)
 
+#however, I use the spceies dataframe instead to calculate the simpson value
+#simpson<-diversity(t(a),index="simpson")
+
