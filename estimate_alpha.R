@@ -25,3 +25,5 @@ write.csv(es_data,file = outfile)
 #library(fossil)
 #df<-read.csv("gene_count.tsv", sep = '\t', row.names = 1)
 #ss<-spp.est(df, rand = 10, abund = FALSE, counter = FALSE, max.est = 'all')
+#the method above is still iffy, use chao1 function by species abundance instead
+#apply(dat,2,chao1)
