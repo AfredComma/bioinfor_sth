@@ -46,10 +46,19 @@ def combines_result(relation_dict, l4_dict, use_id):
     for id in use_id:
         id_result = []
         for r in relation_dict:
-            if id == r.split('^')[1]:
-                id_result.append(relation_dict[r] + ":" + l4_dict[relation_dict[r]] + '\n')
-        with open(id + '.txt', 'w') as f:
-            f.writelines(id_result)
+            if id in r:
+                if relation_dict[r] in l4_dict:
+                    id_result.append(relation_dict[r] + ":" + l4_dict[relation_dict[r]] + '\n')
+                # else:
+                #     print(relation_dict[r])
+
+        new_id = id.replace(' ', '_')
+        new_id = new_id.replace('/','_')
+        new_id = new_id.split('[')[0]
+        out_file = new_id + '.txt'
+        if id_result:
+            with open(out_file, 'w') as f:
+                f.writelines(id_result)
 
 
 def main(ab_file, level3_pt_file, level4_pt_file):
